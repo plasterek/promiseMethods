@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`promiseAllSettled function When all Promises in array are resolved It returns Promise with array promise results 1`] = `
+[
+  "resolved",
+  "resolved",
+]
+`;
+
+exports[`promiseAllSettled function When any promise rejects in given array It will be skipped and array with only resolved Promises 1`] = `
+[
+  "resolved",
+]
+`;
+
+exports[`promiseAllSettled function When given array is empty It returns Promise with an empty array 1`] = `[]`;

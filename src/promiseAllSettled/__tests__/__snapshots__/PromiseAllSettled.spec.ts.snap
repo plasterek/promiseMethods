@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`promiseAllSettled function When any promise in given array is resolved It returns Promise with array of objects with given promise status and results 1`] = `
+[
+  {
+    "status": "fulfilled",
+    "value": "resolved",
+  },
+  {
+    "status": "fulfilled",
+    "value": "resolved",
+  },
+]
+`;
+
+exports[`promiseAllSettled function When any promise rejects in given array It will be returned in promise array with status and reason 1`] = `
+[
+  {
+    "status": "fulfilled",
+    "value": "resolved",
+  },
+  {
+    "reason": "rejected",
+    "status": "rejected",
+  },
+]
+`;
+
+exports[`promiseAllSettled function When given array is empty It returns Promise with an empty array 1`] = `[]`;

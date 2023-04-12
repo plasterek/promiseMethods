@@ -1,0 +1,10 @@
+import { promiseAll } from "./promiseAll/PromiseAll.service";
+import { promiseAllASync } from "./promiseAll/PromiseAllASync.service";
+import { promiseIgnoreErrors } from "./promiseIgnoreErrors/PromiseIgnoreErrors.service";
+import { promiseIgnoreErrorsASync } from "./promiseIgnoreErrors/PromiseIgnoreErrorsASync.service";
+import { promiseRace } from "./promiseRace/PromiseRace.service";
+import { promiseRaceASync } from "./promiseRace/PromiseRaceASync.service";
+import { promiseLast } from "./promiseLast/PromiseLast.service";
+import { promiseLastASync } from "./promiseLast/PromiseLastASync.service";
+import { promiseAllSettled } from "./promiseAllSettled/PromiseAllSettled.service";
+import { promiseAllSettledASync } from "./promiseAllSettled/PromiseAllSettledASync.service";

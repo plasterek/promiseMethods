@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PromiseAllAsync function When any promise rejects in given array It returns Promise with rejected value 1`] = `"rejected"`;
+
+exports[`PromiseAllAsync function When every promise in given array is resolved It returns Promise with array of given promise results 1`] = `
+[
+  "resolved",
+  "resolved",
+]
+`;
+
+exports[`PromiseAllAsync function When given array is empty It returns Promise with empty array 1`] = `[]`;
