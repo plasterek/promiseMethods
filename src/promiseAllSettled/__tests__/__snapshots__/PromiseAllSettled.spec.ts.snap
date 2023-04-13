@@ -25,5 +25,3 @@ exports[`promiseAllSettled function When any promise rejects in given array It w
   },
 ]
 `;
-
-exports[`promiseAllSettled function When given array is empty It returns Promise with an empty array 1`] = `[]`;

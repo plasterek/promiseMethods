@@ -1,13 +1,13 @@
-export const promiseLast = <T>(arrayOfPromise: (() => Promise<T>)[]): Promise<[] | T> => {
+export const promiseLast = <T>(arrayOfPromise: Promise<T>[]): Promise<T | []> => {
   if (arrayOfPromise.length === 0) {
     return Promise.resolve([]);
   }
   let counter: number = 0;
+  const promiseResultArray: T[] = [];
+  const promiseErrors: T[] = [];
   return new Promise((resolve, reject) => {
-    const promiseResultArray: T[] = [];
-    const promiseErrors: T[] = [];
     for (const promise of arrayOfPromise) {
-      promise()
+      promise
         .then((result) => {
           promiseResultArray.push(result);
           counter++;
@@ -19,9 +19,12 @@ export const promiseLast = <T>(arrayOfPromise: (() => Promise<T>)[]): Promise<[]
         .finally(() => {
           if (counter === arrayOfPromise.length) {
             if (promiseErrors.length > 0) {
-              return reject(promiseErrors[0]);
+              const rejecetion: T = promiseErrors[0];
+              return reject(rejecetion);
             }
-            return resolve(promiseResultArray[promiseResultArray.length - 1]);
+            const arrayLenght: number = promiseResultArray.length;
+            const resolved: T = promiseResultArray[arrayLenght - 1];
+            resolve(resolved);
           }
         });
     }

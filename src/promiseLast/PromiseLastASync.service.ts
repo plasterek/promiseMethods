@@ -1,36 +1,37 @@
 import { countTimer } from "../utilities/countTimer.service";
 import { performance as timer } from "perf_hooks";
 
-export const promiseLastASync = async <T>(arrayOfPromise: (() => Promise<T>)[]) => {
+export const promiseLastASync = async <T>(arrayOfPromise: Promise<T>[]): Promise<T | [] | undefined> => {
   if (arrayOfPromise.length === 0) {
     return Promise.resolve([]);
   }
-  let counter: number = 0;
+  const errorArray: T[] = [];
   let resultArray: T[] = [];
   let time: number = 0;
-  const errorArray: T[] = [];
+  let counter: number = 0;
   for (const promise of arrayOfPromise) {
-    const startTime = timer.now();
-    await promise()
-      .then((data) => {
-        const endTime: number = timer.now();
-        const executionTime: number = countTimer(startTime, endTime);
-        if (time < executionTime) {
-          resultArray = [];
-          resultArray.push(data);
-          time = executionTime;
-        }
-        counter++;
-      })
-      .catch((err) => {
-        errorArray.push(err);
-        counter++;
-      });
+    try {
+      const startTime = timer.now();
+      const data: Awaited<T> = await promise;
+      const endTime: number = performance.now();
+      const executionTime: number = countTimer(startTime, endTime);
+      counter++;
+      if (time < executionTime) {
+        resultArray = [];
+        resultArray.push(data);
+        time = executionTime;
+      }
+    } catch (err: any) {
+      errorArray.push(err);
+      counter++;
+    }
   }
   if (counter === arrayOfPromise.length) {
     if (errorArray.length > 0) {
-      return Promise.reject(errorArray[0]);
+      const error: T = errorArray[0];
+      return error;
     }
-    return Promise.resolve(resultArray[0]);
+    const result: T = resultArray[0];
+    return result;
   }
 };

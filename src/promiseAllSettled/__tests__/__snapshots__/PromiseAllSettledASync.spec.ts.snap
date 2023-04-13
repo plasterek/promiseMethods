@@ -20,10 +20,8 @@ exports[`promiseAllSettled function When any promise rejects in given array It w
     "value": "resolved",
   },
   {
-    "reason": "rejected",
     "status": "rejected",
+    "value": "rejected",
   },
 ]
 `;
-
-exports[`promiseAllSettled function When given array is empty It returns Promise with an empty array 1`] = `[]`;

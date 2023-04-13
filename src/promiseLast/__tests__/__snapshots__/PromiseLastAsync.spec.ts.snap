@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`promiseLastASync function When all Promises in array are resolved It returns Promise with result that took most time to resolve 1`] = `"resolvedWithDelay"`;
-
-exports[`promiseLastASync function When any promise rejects in given array It will return rejected promise after all promises in given array are resolved 1`] = `"rejected"`;
-
-exports[`promiseLastASync function When given array is empty It returns Promise with an empty array 1`] = `[]`;

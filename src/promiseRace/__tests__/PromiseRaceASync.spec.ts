@@ -4,57 +4,40 @@ describe("promiseRace function", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  const resolvedPromise: () => Promise<unknown> = () => Promise.resolve("resolved");
-  const rejectedPromise: () => Promise<unknown> = () => Promise.reject("rejected");
-  const delayedResolvedPromise: () => Promise<unknown> = () =>
-    new Promise((resolve) => {
-      setTimeout(function () {
-        resolve("resolvedWithDelay");
-      }, 3000);
-    });
-  const delayedRejectedPromise: () => Promise<unknown> = () =>
-    new Promise((reject) => {
-      setTimeout(function () {
-        reject("rejectedWithDelay");
-      }, 3000);
-    });
-
+  const success: string = "resolved";
+  const succesDelayed: string = "resolvedWithDelay";
+  const failure: string = "rejected";
+  const resolvedPromise: Promise<string> = Promise.resolve(success);
+  const resolvedPromise2: Promise<string> = new Promise((resolve) => setTimeout(() => resolve(succesDelayed), 200));
+  const rejectedPromise: Promise<string> = new Promise((reject) => setTimeout(() => reject(failure), 100));
   describe("When first promise in given array is resolved", () => {
-    it("It returns given Promise result", () => {
+    it("It returns given Promise result", async () => {
       //given
-      jest.useFakeTimers();
-      jest.spyOn(global, "setTimeout");
-      const promiseArray: (() => Promise<unknown>)[] = [delayedRejectedPromise, resolvedPromise];
+      const promiseArray: Promise<string>[] = [resolvedPromise2, resolvedPromise];
       //when
-      const results: Promise<unknown> = promiseRaceASync(promiseArray);
-      jest.runAllTimers();
+      const results: string | { status: string } = await promiseRaceASync(promiseArray);
       //then
-      expect(results).resolves.toMatchSnapshot();
+      expect(results).toBe(success);
     });
   });
 
   describe("When first promise in array rejects", () => {
-    it("It returns Promise with rejected value", () => {
+    it("It returns Promise with rejected value", async () => {
       //given
-      jest.useFakeTimers();
-      jest.spyOn(global, "setTimeout");
-      const promiseArray: (() => Promise<unknown>)[] = [delayedResolvedPromise, rejectedPromise];
+      const promiseArray: Promise<string>[] = [resolvedPromise2, rejectedPromise];
       //when
-      const results: Promise<unknown> = promiseRaceASync(promiseArray);
-      jest.runAllTimers();
-      //then
-      expect(results).rejects.toMatchSnapshot();
+
+      const a: string | { status: string } = await promiseRaceASync(promiseArray);
+      expect(a).toBe(failure);
     });
   });
 
   describe("When given array is empty", () => {
-    it("It returns Promise pending", () => {
-      //given
-      const promiseArray: any[] = [];
+    it("It returns Promise pending", async () => {
       //when
-      const results: Promise<unknown> = promiseRaceASync(promiseArray);
+      const results: string | { status: string } = await promiseRaceASync([]);
       //then
-      expect(results).resolves.toMatchSnapshot();
+      expect(results).toMatchObject({ status: "pending" });
     });
   });
 });

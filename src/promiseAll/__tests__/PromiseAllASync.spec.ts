@@ -1,39 +1,45 @@
 import { promiseAllASync } from "../PromiseAllASync.service";
 
 describe("PromiseAllAsync function", () => {
-  const resolvedPromise: () => Promise<unknown> = () => Promise.resolve("resolved");
-  const rejectedPromise: () => Promise<unknown> = () => Promise.reject("rejected");
+  const succces: string = "resolved";
+  const failure: string = "rejected";
+  const resolvedPromise: Promise<string> = Promise.resolve(succces);
+  const rejectedPromise: Promise<string> = Promise.reject(failure);
+
   describe("When every promise in given array is resolved", () => {
-    it("It returns Promise with array of given promise results", () => {
+    it("It returns Promise with array of given promise results", async () => {
       //given
-      const promiseArray: (() => Promise<unknown>)[] = [resolvedPromise, resolvedPromise];
+      const promiseArray: Promise<string>[] = [resolvedPromise, resolvedPromise];
       //when
-      const results: Promise<unknown> = promiseAllASync(promiseArray);
+      const results: string[] = await promiseAllASync(promiseArray);
       //then
       expect.assertions(1);
-      expect(results).resolves.toMatchSnapshot();
+      expect(results).toMatchObject([succces, succces]);
     });
   });
+
   describe("When any promise rejects in given array", () => {
-    it("It returns Promise with rejected value", () => {
+    it("It returns Promise with rejected value", async () => {
       //given
-      const promiseArray: (() => Promise<unknown>)[] = [resolvedPromise, rejectedPromise];
+      const promiseArray: Promise<string>[] = [resolvedPromise, rejectedPromise];
       //when
-      const results: Promise<unknown> = promiseAllASync(promiseArray);
-      //then
-      expect.assertions(1);
-      expect(results).rejects.toMatchSnapshot();
+      try {
+        const result: string[] = await promiseAllASync(promiseArray);
+        //then
+      } catch (err) {
+        expect.assertions(1);
+        expect(err).toBe(failure);
+      }
     });
   });
+
   describe("When given array is empty", () => {
-    it("It returns Promise with empty array", () => {
-      //given
-      const promiseArray: any[] = [];
+    it("It returns Promise with empty array", async () => {
       //when
-      const results: Promise<unknown> = promiseAllASync(promiseArray);
+      const results: string[] = await promiseAllASync([]);
       //then
       expect.assertions(1);
-      expect(results).resolves.toMatchSnapshot();
+      expect(results).toMatchObject([]);
     });
   });
 });
